@@ -1,0 +1,18 @@
+{
+    "name": "imaginaria/dbsimple",
+    "description": "DbSimple: Simplest but powerful interface to work with various relational databases. (C) Dmitry Koterov",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Dbsimple\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Karel Wintersky",
+            "email": "karel.wintersky@gmail.com"
+        }
+    ],
+    "require": {}
+}
