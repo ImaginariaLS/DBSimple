@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Dbsimple\\": "src/"
+            "DbSimple\\": "src/"
         }
     },
     "authors": [
@@ -14,5 +14,7 @@
             "email": "karel.wintersky@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "ext-pdo": "*"
+    }
 }

@@ -121,9 +121,11 @@ class Generic {
     }
 
     /**
-     * array parseDSN(mixed $dsn)
      * Parse a data source name.
      * See parse_url() for details.
+     *
+     * @param $dsn
+     * @return array|false|int|string|null
      */
     public static function parseDSN($dsn) {
         if (is_array($dsn)) {

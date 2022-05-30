@@ -22,7 +22,7 @@ define('DBSIMPLE_PARENT_KEY', 'PARENT_KEY'); // forrest-based resultset support
  */
 class Connect {
 
-    /** @var DbSimple_Generic_Database База данных */
+    /** @var Generic База данных */
     protected $DbSimple;
 
     /** @var string DSN подключения */
@@ -64,7 +64,7 @@ class Connect {
      * Взять базу из пула коннектов
      *
      * @param string $dsn DSN строка БД
-     * @return DbSimple_Connect
+     * @return Connect
      */
     public static function get($dsn) {
         static $pool = array();
@@ -110,7 +110,7 @@ class Connect {
     public function connect($dsn) {
         $parsed = $this->parseDSN($dsn);
         if (!$parsed) {
-            $this->errorHandler('Ошибка разбора строки DSN', $dsn);
+            $this->errorHandler('Ошибка разбора строки DSN', [ $dsn ]);
         }
         if (!isset($parsed['scheme'])) {
             $this->errorHandler('Невозможно загрузить драйвер базы данных', $parsed);
