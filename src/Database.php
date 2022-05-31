@@ -483,7 +483,7 @@ abstract class Database extends LastError implements DatabaseInterface {
      * array _query($query, &$total)
      * See _performQuery().
      */
-    private function _query($query, &$total) {
+    public function _query($query, &$total) {
         $this->_resetLastError();
 
         // Fetch query attributes.
