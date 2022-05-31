@@ -5,7 +5,9 @@ namespace DbSimple\Adapter;
 use DbSimple\Database;
 use DbSimple\AdapterInterface;
 use DbSimple\DatabaseInterface;
+use Exception;
 use \PDO;
+use PDOException;
 
 /**
  * Database class for Mssql/Dblib for Unix system.

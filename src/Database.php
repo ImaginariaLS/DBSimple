@@ -581,7 +581,7 @@ abstract class Database extends LastError implements DatabaseInterface {
                 $blobFieldNames = $this->_performGetBlobFieldNames($result);
                 foreach ($blobFieldNames as $name) {
                     for ($r = count($rows) - 1; $r >= 0; $r--) {
-                        $rows[$r][$name] = & $this->_performNewBlob($rows[$r][$name]);
+                        $rows[$r][$name] = $this->_performNewBlob($rows[$r][$name]);
                     }
                 }
             }
@@ -974,7 +974,7 @@ abstract class Database extends LastError implements DatabaseInterface {
      * Convert SQL field-list to COUNT(...) clause
      * (e.g. 'DISTINCT a AS aa, b AS bb' -> 'COUNT(DISTINCT a, b)').
      */
-    private function _fieldList2Count($fields) {
+    public function _fieldList2Count($fields) {
         $m = null;
         if (preg_match('/^\s* DISTINCT \s* (.*)/sx', $fields, $m)) {
             $fields = $m[1];
