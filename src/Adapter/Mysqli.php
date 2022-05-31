@@ -28,16 +28,16 @@ use DbSimple\DatabaseInterface;
 /**
  * Database class for MySQL.
  */
-class Mysqli extends Database implements AdapterInterface, DatabaseInterface {
-
-    var $link;
+class Mysqli extends Database implements AdapterInterface, DatabaseInterface
+{
+    public $link;
 
     /**
      * constructor(string $dsn)
      * Connect to MySQL server.
      */
-    function __construct($dsn) {
-
+    public function __construct($dsn)
+    {
         if (!is_callable("mysqli_connect")) {
             return $this->_setLastError("-1", "MySQLi extension is not loaded", "mysqli_connect");
         }
@@ -74,7 +74,8 @@ class Mysqli extends Database implements AdapterInterface, DatabaseInterface {
     /**
      * {@inheritdoc}
      */
-    protected function _performEscape($s, $isIdent = false) {
+    protected function _performEscape($s, $isIdent = false)
+    {
         if (!$isIdent) {
             return "'" . mysqli_real_escape_string($this->link, $s) . "'";
         } else {
@@ -85,14 +86,16 @@ class Mysqli extends Database implements AdapterInterface, DatabaseInterface {
     /**
      * {@inheritdoc}
      */
-    protected function _performNewBlob($blobid = null) {
+    protected function _performNewBlob($blobid = null)
+    {
         return new MysqliBlob($this, $blobid);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function _performGetBlobFieldNames($result) {
+    protected function _performGetBlobFieldNames($result)
+    {
         $allFields = mysqli_fetch_fields($result);
         $blobFields = array();
 
@@ -109,7 +112,8 @@ class Mysqli extends Database implements AdapterInterface, DatabaseInterface {
     /**
      * {@inheritdoc}
      */
-    protected function _performGetPlaceholderIgnoreRe() {
+    protected function _performGetPlaceholderIgnoreRe()
+    {
         return '
             "   (?> [^"\\\\]+|\\\\"|\\\\)*    "   |
             \'  (?> [^\'\\\\]+|\\\\\'|\\\\)* \'   |
@@ -121,7 +125,8 @@ class Mysqli extends Database implements AdapterInterface, DatabaseInterface {
     /**
      * {@inheritdoc}
      */
-    protected function _performTransaction($parameters = null) {
+    protected function _performTransaction($parameters = null)
+    {
         if (function_exists('mysqli_begin_transaction')) {
             return mysqli_begin_transaction($this->link);
         } else {
@@ -132,21 +137,24 @@ class Mysqli extends Database implements AdapterInterface, DatabaseInterface {
     /**
      * {@inheritdoc}
      */
-    protected function _performCommit() {
+    protected function _performCommit()
+    {
         return mysqli_commit($this->link);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function _performRollback() {
+    protected function _performRollback()
+    {
         return mysqli_rollback($this->link);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function _performTransformQuery(&$queryMain, $how) {
+    protected function _performTransformQuery(&$queryMain, $how)
+    {
         // If we also need to calculate total number of found rows...
         switch ($how) {
             // Prepare total calculation (if possible)
@@ -170,7 +178,8 @@ class Mysqli extends Database implements AdapterInterface, DatabaseInterface {
     /**
      * {@inheritdoc}
      */
-    protected function _performQuery($queryMain) {
+    protected function _performQuery($queryMain)
+    {
         $this->_lastQuery = $queryMain;
         $this->_expandPlaceholders($queryMain, false);
         $result = mysqli_query($this->link, $queryMain[0]);
@@ -191,7 +200,8 @@ class Mysqli extends Database implements AdapterInterface, DatabaseInterface {
     /**
      * {@inheritdoc}
      */
-    protected function _performFetch($result) {
+    protected function _performFetch($result)
+    {
         $row = mysqli_fetch_assoc($result);
         if (mysqli_error($this->link)) {
             return $this->_setDbError($this->_lastQuery);
@@ -202,7 +212,8 @@ class Mysqli extends Database implements AdapterInterface, DatabaseInterface {
         return $row;
     }
 
-    protected function _setDbError($query) {
+    protected function _setDbError($query)
+    {
         if ($this->link) {
             return $this->_setLastError(mysqli_errno($this->link), mysqli_error($this->link), $query);
         } else {

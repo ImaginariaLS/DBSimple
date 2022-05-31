@@ -20,7 +20,8 @@ define('DBSIMPLE_PARENT_KEY', 'PARENT_KEY'); // forrest-based resultset support
  *
  * @package DbSimple
  */
-class Connect {
+class Connect
+{
 
     /** @var Generic База данных */
     protected $DbSimple;
@@ -53,7 +54,8 @@ class Connect {
      *
      * @param string $dsn DSN строка БД
      */
-    public function __construct($dsn) {
+    public function __construct($dsn)
+    {
         $this->DbSimple = null;
         $this->DSN = $dsn;
         $this->init = array();
@@ -66,7 +68,8 @@ class Connect {
      * @param string $dsn DSN строка БД
      * @return Connect
      */
-    public static function get($dsn) {
+    public static function get($dsn)
+    {
         static $pool = array();
         return isset($pool[$dsn]) ? $pool[$dsn] : $pool[$dsn] = new self($dsn);
     }
@@ -76,14 +79,16 @@ class Connect {
      *
      * @return string имя типа БД
      */
-    public function getShema() {
+    public function getShema()
+    {
         return $this->shema;
     }
 
     /**
      * Коннект при первом запросе к базе данных
      */
-    public function __call($method, $params) {
+    public function __call($method, $params)
+    {
         if ($this->DbSimple === null) {
             $this->connect($this->DSN);
         }
@@ -94,7 +99,8 @@ class Connect {
      * mixed selectPage(int &$total, string $query [, $arg1] [,$arg2] ...)
      * Функцию нужно вызвать отдельно из-за передачи по ссылке
      */
-    public function selectPage(&$total, $query) {
+    public function selectPage(&$total, $query)
+    {
         if ($this->DbSimple === null) {
             $this->connect($this->DSN);
         }
@@ -107,10 +113,11 @@ class Connect {
      * Подключение к базе данных
      * @param string $dsn DSN строка БД
      */
-    public function connect($dsn) {
+    public function connect($dsn)
+    {
         $parsed = $this->parseDSN($dsn);
         if (!$parsed) {
-            $this->errorHandler('Ошибка разбора строки DSN', [ $dsn ]);
+            $this->errorHandler('Ошибка разбора строки DSN', [$dsn]);
         }
         if (!isset($parsed['scheme'])) {
             $this->errorHandler('Невозможно загрузить драйвер базы данных', $parsed);
@@ -154,7 +161,8 @@ class Connect {
      * @param string $msg Сообщение об ошибке
      * @param array $info Подробная информация о контексте ошибки
      */
-    public function errorHandler($msg, $info) {
+    public function errorHandler($msg, $info)
+    {
         // Если использовалась @, ничего не делать.
         if (!error_reporting()) {
             return;
@@ -171,7 +179,8 @@ class Connect {
      *
      * @param string $query запрос
      */
-    public function addInit($query) {
+    public function addInit($query)
+    {
         $args = func_get_args();
         if ($this->DbSimple !== null) {
             return call_user_func_array(array(&$this->DbSimple, 'query'), $args);
@@ -190,7 +199,8 @@ class Connect {
      * <br>  false - отключен
      * @return callback|null|false предыдущий обработчик
      */
-    public function setErrorHandler($handler) {
+    public function setErrorHandler($handler)
+    {
         $prev = $this->errorHandler;
         $this->errorHandler = $handler;
         if ($this->DbSimple) {
@@ -204,7 +214,8 @@ class Connect {
      * Set query logger called before each query is executed.
      * Returns previous logger.
      */
-    public function setLogger($logger) {
+    public function setLogger($logger)
+    {
         $prev = $this->_logger;
         $this->_logger = $logger;
         if ($this->DbSimple) {
@@ -218,7 +229,8 @@ class Connect {
      * Set cache mechanism called during each query if specified.
      * Returns previous handler.
      */
-    public function setCacher(Zend_Cache_Backend_Interface $cacher = null) {
+    public function setCacher(Zend_Cache_Backend_Interface $cacher = null)
+    {
         $prev = $this->_cacher;
         $this->_cacher = $cacher;
         if ($this->DbSimple) {
@@ -231,7 +243,8 @@ class Connect {
      * string setIdentPrefix($prx)
      * Set identifier prefix used for $_ placeholder.
      */
-    public function setIdentPrefix($prx) {
+    public function setIdentPrefix($prx)
+    {
         $old = $this->_identPrefix;
         if ($prx !== null) {
             $this->_identPrefix = $prx;
@@ -246,7 +259,8 @@ class Connect {
      * string setCachePrefix($prx)
      * Set cache prefix used in key caclulation.
      */
-    public function setCachePrefix($prx) {
+    public function setCachePrefix($prx)
+    {
         $old = $this->_cachePrefix;
         if ($prx !== null) {
             $this->_cachePrefix = $prx;
@@ -263,7 +277,8 @@ class Connect {
      * @param string $dsn строка DSN для разбора
      * @return array Параметры коннекта
      */
-    protected function parseDSN($dsn) {
+    protected function parseDSN($dsn)
+    {
         return Generic::parseDSN($dsn);
     }
 

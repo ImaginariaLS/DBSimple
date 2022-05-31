@@ -117,6 +117,11 @@ abstract class Database extends LastError implements DatabaseInterface {
     private $MAX_LOG_ROW_LEN = 128;
 
     /**
+     * @var array|false|int|string|null
+     */
+    private $_dsnParsed;
+
+    /**
      * Public methods.
      */
 
@@ -352,7 +357,7 @@ abstract class Database extends LastError implements DatabaseInterface {
      * массив поле=>значение для этой строки
      *
      * @param string $name имя класса
-     * @return DbSimple\Generic\Database указатель на себя
+     * @return self указатель на себя
      */
     public function setClassName($name) {
         $this->_className = $name;
@@ -461,17 +466,17 @@ abstract class Database extends LastError implements DatabaseInterface {
         if (is_array($dsn)) {
             return $dsn;
         }
-        $parsed = parse_url($dsn);
-        if (!$parsed) {
+        $this->_dsnParsed = parse_url($dsn);
+        if (!$this->_dsnParsed) {
             return null;
         }
         $params = null;
-        if (!empty($parsed['query'])) {
-            parse_str($parsed['query'], $params);
-            $parsed += $params;
+        if (!empty($this->_dsnParsed['query'])) {
+            parse_str($this->_dsnParsed['query'], $params);
+            $this->_dsnParsed += $params;
         }
-        $parsed['dsn'] = $dsn;
-        return $parsed;
+        $this->_dsnParsed['dsn'] = $dsn;
+        return $this->_dsnParsed;
     }
 
     /**
@@ -1184,5 +1189,10 @@ abstract class Database extends LastError implements DatabaseInterface {
 
         $this->_logQuery($log, true);
     }
+
+    public function getDsnParsed() {
+        return $this->_dsnParsed;
+    }
+
 
 }

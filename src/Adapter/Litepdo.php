@@ -1,4 +1,3 @@
-
 <?php
 
 namespace DbSimple\Adapter;
@@ -6,6 +5,8 @@ namespace DbSimple\Adapter;
 use DbSimple\Database;
 use DbSimple\AdapterInterface;
 use DbSimple\DatabaseInterface;
+use PDO;
+use PDOException;
 
 /**
  * DbSimple_Litepdo: PDO SQLite database.

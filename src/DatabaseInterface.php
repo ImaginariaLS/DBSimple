@@ -121,7 +121,7 @@ interface DatabaseInterface {
      * массив поле=>значение для этой строки
      *
      * @param string $name имя класса
-     * @return DbSimple\DatabaseInterface указатель на себя
+     * @return DatabaseInterface указатель на себя
      */
     public function setClassName($name);
 
